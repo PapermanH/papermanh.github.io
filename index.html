@@ -127,17 +127,17 @@
                 
                 update(mouse) {
                     // 计算与鼠标的距离
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    this.distance = Math.sqrt(dx * dx + dy * dy);
-                    this.force = -mouse.radius / this.distance;
+                    <!--let dx = mouse.x - this.x;-->
+                    <!--let dy = mouse.y - this.y;-->
+                    <!--this.distance = Math.sqrt(dx * dx + dy * dy);-->
+                    <!--this.force = -mouse.radius / this.distance;-->
                     
                     // 如果粒子在鼠标影响范围内
-                    if (this.distance < mouse.radius) {
-                        this.angle = Math.atan2(dy, dx);
-                        this.vx += this.force * Math.cos(this.angle);
-                        this.vy += this.force * Math.sin(this.angle);
-                    }
+                    <!--if (this.distance < mouse.radius) {-->
+                    <!--    this.angle = Math.atan2(dy, dx);-->
+                    <!--    this.vx += this.force * Math.cos(this.angle);-->
+                    <!--    this.vy += this.force * Math.sin(this.angle);-->
+                    <!--}-->
                     
                     // 粒子围绕原始位置旋转
                     this.orbitAngle += this.orbitSpeed;
