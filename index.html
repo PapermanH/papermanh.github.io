@@ -80,8 +80,8 @@
 </head>
 <body>
     <div class="container">
-        <div class="heart-icon"></div>
-        <h1 class="title"></h1>
+        <!--<div class="heart-icon">从此烟雨落盛京，一人撑伞两人行</div>-->
+        <!--<h9 class="title">11111111111111</h9>-->
         <canvas id="heartCanvas"></canvas>
         <div class="instructions"></div>
     </div>
@@ -90,16 +90,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             const canvas = document.getElementById('heartCanvas');
             const ctx = canvas.getContext('2d');
-            
+
             // 设置Canvas尺寸为窗口大小
             function resizeCanvas() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
             }
-            
+
             resizeCanvas();
             window.addEventListener('resize', resizeCanvas);
-            
+
             // 粒子类
             class Particle {
                 constructor(x, y, color) {
@@ -127,36 +127,36 @@
                 
                 update(mouse) {
                     // 计算与鼠标的距离
-                    <!--let dx = mouse.x - this.x;-->
-                    <!--let dy = mouse.y - this.y;-->
-                    <!--this.distance = Math.sqrt(dx * dx + dy * dy);-->
-                    <!--this.force = -mouse.radius / this.distance;-->
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    this.distance = Math.sqrt(dx * dx + dy * dy);
+                    this.force = -mouse.radius / this.distance;
                     
                     // 如果粒子在鼠标影响范围内
-                    <!--if (this.distance < mouse.radius) {-->
-                    <!--    this.angle = Math.atan2(dy, dx);-->
-                    <!--    this.vx += this.force * Math.cos(this.angle);-->
-                    <!--    this.vy += this.force * Math.sin(this.angle);-->
-                    <!--}-->
-                    
+                    if (this.distance < mouse.radius) {
+                        this.angle = Math.atan2(dy, dx);
+                        this.vx += this.force * Math.cos(this.angle);
+                        this.vy += this.force * Math.sin(this.angle);
+                    }
+
                     // 粒子围绕原始位置旋转
                     this.orbitAngle += this.orbitSpeed;
                     this.originalX += Math.cos(this.orbitAngle) * 0.16;
                     this.originalY += Math.sin(this.orbitAngle) * 0.16;
-                    
+
                     // 应用缓动效果
                     this.vx += (this.originalX - this.x) * this.ease;
                     this.vy += (this.originalY - this.y) * this.ease;
-                    
+
                     // 应用摩擦力
                     this.vx *= this.friction;
                     this.vy *= this.friction;
-                    
+
                     // 更新位置
                     this.x += this.vx;
                     this.y += this.vy;
                 }
-                
+
                 draw() {
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
@@ -164,27 +164,27 @@
                     ctx.fill();
                 }
             }
-            
+
             // 鼠标/触摸交互对象
             const mouse = {
                 x: canvas.width / 2,
                 y: canvas.height / 2,
                 radius: 100
             };
-            
+
             // 处理鼠标移动
             canvas.addEventListener('mousemove', function(event) {
                 mouse.x = event.x;
                 mouse.y = event.y;
             });
-            
+
             // 处理触摸移动
             canvas.addEventListener('touchmove', function(event) {
                 event.preventDefault();
                 mouse.x = event.touches[0].clientX;
                 mouse.y = event.touches[0].clientY;
             });
-            
+
             // 生成爱心形状的粒子
             function createHeartParticles() {
                 const particlesArray = [];
@@ -197,19 +197,19 @@
                     <!--'#f50057',-->
                     <!--'#c51162'-->
                 ];
-                
+
                 // 爱心形状的参数方程
                 // x = 16sin^3(t)
                 // y = 13cos(t) - 5cos(2t) - 2cos(3t) - cos(4t)
-                
+
                 for (let i = 0; i < numberOfParticles; i++) {
                     const t = Math.random() * Math.PI * 2;
                     const scale = 10;
                     const x = 16 * Math.pow(Math.sin(t), 3) * scale;
                     const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 3 * Math.cos(3*t) - Math.cos(4*t)) * scale;
-                    
+
                     const color = heartColors[Math.floor(Math.random() * heartColors.length)];
-                    
+
                     particlesArray.push(
                         new Particle(
                             canvas.width / 2 + x,
@@ -218,12 +218,12 @@
                         )
                     );
                 }
-                
+
                 return particlesArray;
             }
-            
+
             const particles = createHeartParticles();
-            
+
             // 连接粒子的线
             function connectParticles() {
                 const opacity = 0.2;
@@ -232,7 +232,7 @@
                         const dx = particles[a].x - particles[b].x;
                         const dy = particles[a].y - particles[b].y;
                         const distance = Math.sqrt(dx * dx + dy * dy);
-                        
+
                         if (distance < 80) {
                             ctx.strokeStyle = `rgba(255, 64, 129, ${opacity * (1 - distance/80)})`;
                             ctx.lineWidth = 1;
@@ -244,23 +244,23 @@
                     }
                 }
             }
-            
+
             // 动画循环
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
+
                 // 更新并绘制所有粒子
                 for (let i = 0; i < particles.length; i++) {
                     particles[i].update(mouse);
                     particles[i].draw();
                 }
-                
+
                 // 连接粒子
                 <!--connectParticles();-->
-                
+
                 requestAnimationFrame(animate);
             }
-            
+
             animate();
         });
     </script>
